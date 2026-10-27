@@ -10,3 +10,6 @@ dist/
 data/raw/
 outputs/
 .ipynb_checkpoints/
+
+# Generated Markdown reading copies
+*.pdf
