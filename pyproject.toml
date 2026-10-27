@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hiast-nlp-intent-routing"
+version = "0.1.0"
+description = "Teacher-led intent routing project for HIAST NLP practicals"
+requires-python = ">=3.11"
+dependencies = ["nltk==3.9.2"]
+
+[project.scripts]
+intent-routing = "intent_routing.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
