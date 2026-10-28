@@ -2,7 +2,7 @@
 
 from collections import Counter
 
-from .baseline import OOS, reject
+from model import OOS, reject
 
 
 def divide(a, b):
@@ -10,7 +10,7 @@ def divide(a, b):
 
 
 def auc(truth, scores):
-    """Mann–Whitney AUROC with average ranks for tied scores."""
+    """Mannâ€“Whitney AUROC with average ranks for tied scores."""
     pairs = sorted(zip(scores, [y == OOS for y in truth], strict=True))
     positives = sum(y for _, y in pairs)
     negatives = len(pairs) - positives

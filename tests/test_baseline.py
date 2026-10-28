@@ -1,18 +1,16 @@
 import unittest
 
-from intent_routing.baseline import Features, OOS, Router, reject
-from intent_routing.evaluation import auc, metrics, select_threshold
-from intent_routing.data import development
+from model import tokens, OOS, Router, reject
+from evaluation import auc, metrics, select_threshold
+from dataset import development
 
 
 class RoutingTests(unittest.TestCase):
     def test_tokens_preserve_negation_and_stem(self):
-        features = Features()
-        self.assertEqual(features.tokens("NOT running, don't cancel!"), ["not", "run", "don't", "cancel"])
-        self.assertNotIn("not", Features(drop_negation=True).tokens("not running"))
+        self.assertEqual(tokens("NOT running, don't cancel!"), ["not", "run", "don't", "cancel"])
 
     def test_match_score_and_deterministic_tie(self):
-        router = Router([["red blue", "a"], ["red blue", "b"]], Features(1, False))
+        router = Router([["red blue", "a"], ["red blue", "b"]], stemming=False, ngram_max=1)
         self.assertEqual(router.match("red green"), ("a", 1 / 3, 0))
         self.assertEqual(router.match("unknown"), (OOS, 0.0, None))
         self.assertEqual(reject("a", 1 / 3, .4), OOS)
@@ -21,7 +19,7 @@ class RoutingTests(unittest.TestCase):
 
     def test_training_rejects_oos(self):
         with self.assertRaises(ValueError):
-            Router([["unknown", OOS]], Features())
+            Router([["unknown", OOS]])
 
     def test_auc_ties(self):
         self.assertEqual(auc(["a", OOS], [.1, .9]), 1)

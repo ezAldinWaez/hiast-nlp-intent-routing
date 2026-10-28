@@ -1,12 +1,9 @@
 # S03 walkthrough
 
-1. Frame the decision: supported intent or rejection. Explain false acceptance versus rejecting a valid request.
-2. Inspect training examples and the fixed training/validation split. Keep final-test examples out of class exploration.
-3. Trace regex tokens, Porter stems, and unigram/bigram sets for one request.
-4. Match against training examples using Jaccard overlap; inspect the nearest example. The similarity is not a probability.
-5. Run the comparisons: majority, baseline, no stemming, unigrams only, and dropped negation. Each lexical variant tunes its own rejection threshold on validation.
-6. Read metrics and several errors from `outputs/baseline/`. Explain one failure and propose the next experiment.
+1. Define the supported-intent versus rejection decision.
+2. Follow `main.py`: training/validation split → matching → threshold → evaluation.
+3. Inspect `model.py`: regex tokens, stems, n-grams, and Jaccard overlap.
+4. Run `uv run python main.py`; inspect metrics and errors in `outputs/results.json`.
+5. Change only `NGRAM_MAX` or `STEMMING`, rerun, and explain the difference. Save the previous results first.
 
-**Required:** W01–W02 techniques. **Bonus:** a justified W03–W04 extension once the student can explain its tools; not needed for the core submission. Evaluation metrics and threshold selection are supporting practical material.
-
-Each milestone report states the decision, evidence, and interpretation. Dates follow actual two-week periods, not THEO file pairs.
+W01–W02 is required; W03–W04 is bonus. Keep final-test data untouched. Each two-week milestone reports a decision, evidence, and interpretation.

@@ -1,19 +1,16 @@
-# Initial W01–W02 baseline
+# W01–W02 baseline
 
-**Decision:** compare nearest-training-example Jaccard matching over regex tokens and optional Porter stems. Retain negation; compare unigram/bigram features against unigrams alone. No learned semantic representations are used.
+**Decision:** match each request to a training example using Jaccard overlap of stemmed unigrams and bigrams. Reject low-overlap requests.
 
-**Reproduce:** `uv run intent-routing run`. See `configs/baseline.json` and the [pinned data](../data/README.md). All 150 intents are included. Each variant selects its threshold on validation by maximizing the mean of in-scope macro-F1 and OOS F1; ties prefer the lower threshold.
+**Reproduce:** `uv run python main.py`. Use all 150 intents and the original training/validation splits. Choose the threshold by the mean of in-scope macro-F1 and OOS F1; ties prefer the lower threshold.
 
-| Variant | Threshold | In-scope macro-F1 | OOS F1 | OOS AUROC |
+| System | Threshold | In-scope macro-F1 | OOS F1 | OOS AUROC |
 | --- | ---: | ---: | ---: | ---: |
 | Majority | — | 0.0001 | 0.0000 | 0.5000 |
-| Stemmed unigrams + bigrams | 0.20 | 0.7687 | 0.3062 | 0.8407 |
-| No stemming | 0.20 | 0.7575 | 0.2909 | 0.8316 |
-| Stemmed unigrams | 0.30 | 0.8023 | 0.3143 | 0.8654 |
-| Drop negation | 0.20 | 0.7642 | 0.3010 | 0.8413 |
+| Lexical baseline | 0.20 | 0.7687 | 0.3062 | 0.8407 |
 
-**Interpretation:** unigrams lead this validation comparison. Bigrams did not help; stemming modestly helped. Even the best variant accepts 67% of OOS requests, so routing accuracy alone is misleading. Errors include translation requests routed to spelling and transfer requests routed to routing-number queries.
+**Interpretation:** the baseline accepts 68% of OOS requests. Errors include translation requests routed to spelling and transfers routed to routing-number queries. Inspect `outputs/results.json` before changing the pipeline.
 
-**Limits:** these are threshold-selection scores, not held-out estimates. Three normalized training/validation overlaps were found; official splits were retained. No paraphrase audit or final-test evaluation has been performed. The default prediction command demonstrates the configured unigram/bigram baseline, not an automatically selected winner.
+**Limits:** these scores use the same validation set as threshold selection. Three normalized training/validation overlaps were retained. No paraphrase audit or final-test evaluation has been performed.
 
-**Next:** inspect rejection errors and threshold trade-offs before introducing later methods. This initial snapshot is not a completed two-week milestone.
+**Next experiment:** set `NGRAM_MAX = 1` in `main.py`, rerun, and compare. This snapshot is not a completed two-week milestone.
