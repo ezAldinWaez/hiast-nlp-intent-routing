@@ -8,7 +8,6 @@ dist/
 .env.*
 .DS_Store
 data/raw/
-outputs/
 .ipynb_checkpoints/
 
 # Generated Markdown reading copies

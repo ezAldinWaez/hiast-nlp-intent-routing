@@ -2,7 +2,7 @@
 
 from collections import Counter
 
-from model import OOS, reject
+from .model import OOS, reject
 
 
 def divide(a, b):

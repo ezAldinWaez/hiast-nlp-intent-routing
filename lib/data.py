@@ -1,4 +1,4 @@
-"""Pinned dataset acquisition and validation; no corpus/model downloads from NLTK."""
+"""Pinned CLINC150 download and development splits for the notebooks."""
 
 import hashlib
 import json

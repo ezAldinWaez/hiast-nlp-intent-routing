@@ -1,13 +1,24 @@
 import unittest
 
-from model import tokens, OOS, Router, reject
-from evaluation import auc, metrics, select_threshold
-from dataset import development
+from lib.model import tokens, features, OOS, Router, reject
+from lib.evaluation import auc, metrics, select_threshold
+from lib.data import development
 
 
 class RoutingTests(unittest.TestCase):
     def test_tokens_preserve_negation_and_stem(self):
         self.assertEqual(tokens("NOT running, don't cancel!"), ["not", "run", "don't", "cancel"])
+
+    def test_features_do_not_join_punctuation_delimited_sentences(self):
+        expected = {("red",), ("blue",), ("green",), ("red", "blue")}
+        for boundary in (". ", "! ", "? ", "?! ", "\n"):
+            with self.subTest(boundary=boundary):
+                self.assertEqual(features("red blue" + boundary + "green", False, 3), expected)
+
+    def test_feature_sets_and_decimal_token_policy(self):
+        self.assertEqual(features("3.50", False), {("3",), ("50",), ("3", "50")})
+        self.assertEqual(features("pay pay", False), features("pay pay pay", False))
+        self.assertEqual(features("...?!\n", False), set())
 
     def test_match_score_and_deterministic_tie(self):
         router = Router([["red blue", "a"], ["red blue", "b"]], stemming=False, ngram_max=1)

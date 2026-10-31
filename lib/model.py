@@ -1,9 +1,10 @@
-"""W01–W02: regex tokens, Porter stems, n-grams, and Jaccard matching."""
+"""Reusable lexical router: regex tokens, Porter stems, NLTK n-grams, Jaccard."""
 
 import re
 from collections import Counter, defaultdict
 
 from nltk.stem import PorterStemmer
+from nltk.util import ngrams
 
 OOS = "out_of_scope"
 STEMMER = PorterStemmer()
@@ -15,9 +16,16 @@ def tokens(text, stemming=True):
 
 
 def features(text, stemming=True, ngram_max=2):
-    words = tokens(text, stemming)
-    return {tuple(words[i:i + n]) for n in range(1, ngram_max + 1)
-            for i in range(len(words) - n + 1)}
+    # A boundary sketch, not linguistic sentence segmentation: abbreviations
+    # such as "Dr. Ali" split too; "card.What" has no recognized boundary.
+    # Split BEFORE discarding punctuation, keeping decimals such as 3.50 intact.
+    chunks = re.split(r"[.!?]+(?=\s|$)|[\r\n]+", text)
+    grams = set()
+    for chunk in chunks:
+        words = tokens(chunk, stemming)
+        for n in range(1, ngram_max + 1):
+            grams.update(ngrams(words, n))
+    return grams
 
 
 class Router:

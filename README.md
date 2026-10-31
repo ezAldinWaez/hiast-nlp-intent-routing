@@ -1,23 +1,25 @@
-# HIAST NLP: intent routing
+# NLP intent routing
 
-Minimal W01–W02 teacher example: route a request to one of CLINC150’s 150 intents or reject it as `out_of_scope`.
+Route an English request to a supported intent or reject it as out_of_scope.
 
-```sh
-uv sync --locked
-uv run python main.py
-uv run python main.py "How much money is in my account?"
-uv run python -m unittest discover -s tests -v
-```
+Start with [M1 — Lexical baseline](notebooks/M01-lexical-baseline.ipynb). Its task description, data, code, saved results, discussion, and interpretation are all in the notebook.
 
-Python 3.11+. The first run downloads the pinned dataset. Each run fits the baseline, chooses a threshold on validation, saves `outputs/results.json`, and routes one example. No GPU or NLTK corpus downloads are needed.
+## Run
 
-- `main.py`: settings and the complete experiment.
-- `model.py`: regex tokens, optional stemming, n-grams, and nearest-example Jaccard matching.
-- `dataset.py`: verified download and training/validation splits.
-- `evaluation.py`: metrics and threshold selection.
+From this folder, with Python 3.11+:
 
-Change `STEMMING` or `NGRAM_MAX` in `main.py` for a controlled comparison; save results before rerunning. Final-test data is never used. Similarity is not a probability; validation scores are also used for threshold selection.
+~~~sh
+uv sync --locked --group notebook
+uv run --group notebook jupyter lab notebooks/M01-lexical-baseline.ipynb
+~~~
 
-[S03 walkthrough](reports/s03-walkthrough.md) · [Baseline report](reports/baseline.md) · [Data source](data/README.md)
+Select the Python kernel from this environment and run the notebook from top to bottom. The first run downloads the pinned dataset; later runs use the verified local copy. Saved outputs support reading without execution.
 
-S03 requires W01–W02; W03–W04 is optional bonus work. Five milestones each span two actual weeks. Private instructor material for now.
+## Structure
+
+- notebooks/: one compact notebook per milestone.
+- lib/: small reusable data, model, evaluation, display, and plotting helpers.
+- tests/: checks for the shared helpers.
+- data/raw/: downloaded data, ignored by Git.
+
+M1 is implemented now. Add later milestone notebooks as the project develops, reusing or extending lib/. Keep experiment settings, results, and explanations in the corresponding notebook.
