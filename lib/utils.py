@@ -8,7 +8,18 @@ def table(headers, rows):
     from IPython.display import HTML, display
 
     def row(values, tag):
-        return "<tr>" + "".join(f"<{tag}>{escape(str(v))}</{tag}>" for v in values) + "</tr>"
+        return (
+            "<tr>"
+            + "".join(f"<{tag}>{escape(str(v))}</{tag}>" for v in values)
+            + "</tr>"
+        )
 
-    display(HTML("<table><thead>" + row(headers, "th") + "</thead><tbody>"
-                 + "".join(row(values, "td") for values in rows) + "</tbody></table>"))
+    display(
+        HTML(
+            "<table><thead>"
+            + row(headers, "th")
+            + "</thead><tbody>"
+            + "".join(row(values, "td") for values in rows)
+            + "</tbody></table>"
+        )
+    )

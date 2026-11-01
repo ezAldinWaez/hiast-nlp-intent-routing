@@ -37,7 +37,9 @@ def development(data):
     labels = sorted({label for _, label in train})
     if len(labels) != 150 or set(Counter(y for _, y in train).values()) != {100}:
         raise ValueError("Expected 150 intents with 100 training examples each")
-    if set(Counter(y for _, y in val).values()) != {20} or {y for _, y in val} != set(labels):
+    if (set(Counter(y for _, y in val).values()) != {20}) or (
+        {y for _, y in val} != set(labels)
+    ):
         raise ValueError("Expected 20 validation examples for each training intent")
     if len(oos) != 100 or any(y != "oos" for _, y in oos):
         raise ValueError("Expected 100 out-of-scope validation examples")

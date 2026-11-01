@@ -1,8 +1,8 @@
 import unittest
 
-from lib.model import tokens, features, OOS, Router, reject
-from lib.evaluation import auc, metrics, select_threshold
 from lib.data import development
+from lib.evaluation import auc, metrics, select_threshold
+from lib.model import OOS, Router, features, reject, tokens
 
 
 class RoutingTests(unittest.TestCase):

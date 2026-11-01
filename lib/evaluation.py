@@ -10,7 +10,7 @@ def divide(a, b):
 
 
 def auc(truth, scores):
-    """Mannâ€“Whitney AUROC with average ranks for tied scores."""
+    """Mann-Whitney AUROC with average ranks for tied scores."""
     pairs = sorted(zip(scores, [y == OOS for y in truth], strict=True))
     positives = sum(y for _, y in pairs)
     negatives = len(pairs) - positives
@@ -34,8 +34,10 @@ def metrics(truth, predicted, labels, oos_scores):
     true_counts = Counter(y for y, _ in inside)
     pred_counts = Counter(p for _, p in inside)
     hits = Counter(y for y, p in inside if y == p)
-    macro = sum(divide(2 * hits[label], true_counts[label] + pred_counts[label])
-                for label in labels) / len(labels)
+    macro = sum(
+        divide(2 * hits[label], true_counts[label] + pred_counts[label])
+        for label in labels
+    ) / len(labels)
     tp = sum(y == OOS and p == OOS for y, p in pairs)
     fp = sum(y != OOS and p == OOS for y, p in pairs)
     fn = sum(y == OOS and p != OOS for y, p in pairs)
