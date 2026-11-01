@@ -7,7 +7,8 @@ dist/
 .env
 .env.*
 .DS_Store
-data/raw/
+data/raw/*
+!data/raw/data_full.json
 .ipynb_checkpoints/
 
 # Generated Markdown reading copies
