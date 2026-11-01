@@ -6,9 +6,12 @@ Start with [M1 — Lexical baseline](notebooks/M01-lexical-baseline.ipynb). Its 
 
 ## Run
 
-From this folder, with Python 3.11+:
+Notebooks, including their saved figures, use [Git LFS](https://git-lfs.com/). Install Git LFS and run `git lfs install` before cloning. In an existing checkout, run `git lfs pull` to download the notebook contents.
+
+From this folder, with Python 3.11+ and Git LFS installed:
 
 ~~~sh
+git lfs pull
 uv sync --locked --group notebook
 uv run --group notebook jupyter lab notebooks/M01-lexical-baseline.ipynb
 ~~~
