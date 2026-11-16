@@ -4,7 +4,7 @@ Route an English request to a supported intent or reject it as out_of_scope.
 
 Start with [M1 — Lexical baseline](notebooks/M01-lexical-baseline.ipynb), then [M2 — Linguistic features](notebooks/M02-linguistic-features.ipynb). Each notebook keeps its task description, experiments, saved results, and interpretation together.
 
-Releases: [M1 / S03](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/s03) · [M2](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/m2).
+Releases: [M1 / S03](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/s03) · [M2 / S05](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/s05).
 
 ## Reading after S03
 
