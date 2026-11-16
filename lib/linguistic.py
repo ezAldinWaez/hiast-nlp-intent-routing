@@ -21,8 +21,13 @@ def english_pipeline(model_dir):
     import stanza
 
     return stanza.Pipeline(
-        lang="en", dir=str(model_dir), package=None, processors=PACKAGES,
-        use_gpu=False, download_method=None, verbose=False,
+        lang="en",
+        dir=str(model_dir),
+        package=None,
+        processors=PACKAGES,
+        use_gpu=False,
+        download_method=None,
+        verbose=False,
     )
 
 
@@ -30,15 +35,26 @@ def annotate(texts, pipeline, batch_size=128):
     """Return sentence-local word records, preserving request order and word IDs."""
     records = []
     for start in range(0, len(texts), batch_size):
-        docs = pipeline.bulk_process(texts[start:start + batch_size])
-        records.extend([
+        docs = pipeline.bulk_process(texts[start : start + batch_size])
+        records.extend(
             [
-                [dict(id=w.id, text=w.text, lemma=w.lemma, upos=w.upos,
-                      head=w.head, deprel=w.deprel) for w in sentence.words]
-                for sentence in doc.sentences
+                [
+                    [
+                        {
+                            "id": w.id,
+                            "text": w.text,
+                            "lemma": w.lemma,
+                            "upos": w.upos,
+                            "head": w.head,
+                            "deprel": w.deprel,
+                        }
+                        for w in sentence.words
+                    ]
+                    for sentence in doc.sentences
+                ]
+                for doc in docs
             ]
-            for doc in docs
-        ])
+        )
     if len(records) != len(texts):
         raise ValueError("Annotation count does not match request count")
     return records
