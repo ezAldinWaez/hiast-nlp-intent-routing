@@ -2,7 +2,9 @@
 
 Route an English request to a supported intent or reject it as out_of_scope.
 
-Start with [M1 — Lexical baseline](notebooks/M01-lexical-baseline.ipynb). Its task description, data, code, saved results, discussion, and interpretation are all in the notebook.
+Start with [M1 — Lexical baseline](notebooks/M01-lexical-baseline.ipynb), then [M2 — Linguistic features](notebooks/M02-linguistic-features.ipynb). Each notebook keeps its task description, experiments, saved results, and interpretation together.
+
+Releases: [M1 / S03](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/s03) · [M2](https://github.com/ezAldinWaez/hiast-nlp-intent-routing/releases/tag/m2).
 
 ## Reading after S03
 
@@ -24,6 +26,22 @@ uv run --group notebook jupyter lab notebooks/M01-lexical-baseline.ipynb
 
 Select the Python kernel from this environment and run the notebook from top to bottom. The loader verifies the dataset's checksum before use and downloads the pinned upstream copy if the file is missing. Saved outputs support reading without execution.
 
+### M2 — Lemmas and dependency structure
+
+M2 compares M1's retained stemmed-unigram router with lemma unigrams and a router combining lexical and dependency similarity. It uses selected pre-semantic material from THEO W01–05, including pretrained linguistic annotations; the intent router receives discrete lemmas and relations, rather than semantic embeddings.
+
+Install the additional environment group, then explicitly download the English Stanza packages once:
+
+~~~sh
+uv sync --locked --group notebook --group m2
+uv run --group notebook --group m2 python -c "import stanza; from lib.linguistic import PACKAGES; stanza.download('en', model_dir='data/models', package=None, processors=PACKAGES)"
+uv run --group notebook --group m2 jupyter lab notebooks/M02-linguistic-features.ipynb
+~~~
+
+Use S04's English models, stored locally in `data/models/`. Allow several minutes for CPU annotation. Saved outputs can be read without installing Stanza or its models.
+
+Both milestones use the same supported training data and validation protocol. `oos_train` and the final-test splits stay unused. M2's conclusions describe development results, not final-test performance.
+
 The unchanged dataset is [CLINC150 / oos-eval](https://github.com/clinc/oos-eval/tree/828f8093932c8fe6ca7936c3d2e52903b1c523de), accompanying Larson et al., *An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction* (2019), under [CC BY 3.0](https://github.com/clinc/oos-eval/blob/828f8093932c8fe6ca7936c3d2e52903b1c523de/LICENSE). The pinned revision and SHA-256 are recorded in [lib/data.py](lib/data.py).
 
 ## Structure
@@ -35,8 +53,8 @@ The unchanged dataset is [CLINC150 / oos-eval](https://github.com/clinc/oos-eval
 
 ## Milestone workflow
 
-M01 is finalized and frozen. Preserve its code, explanations, and saved outputs in later work.
+M01 and M02 are finalized and frozen. Preserve their code, explanations, and saved outputs in later work.
 
-Add a new notebook for each later milestone, keeping its experiment settings, results, and explanations together. Reuse or extend `lib/` while preserving the interfaces and behavior needed to run M01 and reproduce its results. Put changed behavior behind a new function or an explicit option used by the new notebook, preserving existing defaults.
+Add a new notebook for each later milestone, keeping its experiment settings, results, and explanations together. Reuse or extend `lib/` while preserving the interfaces and behavior needed to run the frozen notebooks and reproduce their results. Put changed behavior behind a new function or an explicit option used by the new notebook, preserving existing defaults.
 
-When changing shared helpers, run the helper tests and verify M01 still executes and reproduces its results without overwriting the frozen notebook. Record later corrections, comparisons, and findings in the new milestone notebook. README and other documentation can continue to evolve.
+When changing shared helpers, run the helper tests and verify the affected frozen notebooks still execute and reproduce their results without overwriting them. Record later corrections, comparisons, and findings in the new milestone notebook. README and other documentation can continue to evolve.

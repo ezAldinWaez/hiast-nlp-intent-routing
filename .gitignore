@@ -13,3 +13,6 @@ data/raw/*
 
 # Generated Markdown reading copies
 *.pdf
+
+# M2 downloaded annotation resources
+/data/models/
